@@ -10,14 +10,16 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onOpenLogin, isLoggedIn }) => {
-  const [apiUrl, setUrl] = useState<string>('http://localhost:3000/api/v1');
+  const [apiUrl, setUrl] = useState<string>('http://nlxi448mx3uwcr4oj3yjhjod.187.127.157.13.sslip.io/api/v1');
   const [showConfigModal, setShowConfigModal] = useState<boolean>(false);
   const [isLiveApi, setIsLiveApi] = useState<boolean>(true);
 
   useEffect(() => {
-    setUrl(getApiBaseUrl());
+    const currentBase = getApiBaseUrl();
+    setUrl(currentBase);
     // Test backend connectivity
-    fetch('http://localhost:3000/health')
+    const rootUrl = currentBase.replace(/\/api\/v1\/?$/, '');
+    fetch(`${rootUrl}/health`)
       .then(res => setIsLiveApi(res.ok))
       .catch(() => setIsLiveApi(false));
   }, []);
@@ -113,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenLogin, isLoggedIn }) => {
               <Server className="h-4.5 w-4.5 text-zinc-400" /> API Connection Endpoint
             </h3>
             <p className="text-xs text-zinc-500 mb-4">
-              Configure the base URL of your Node.js backend server. Standard local port is 3000.
+              Configure the base URL of your backend server API endpoint.
             </p>
             <div className="space-y-4">
               <div>
@@ -123,14 +125,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenLogin, isLoggedIn }) => {
                   value={apiUrl}
                   onChange={e => setUrl(e.target.value)}
                   className="w-full bg-zinc-950 border border-zinc-850 px-3 py-1.5 rounded-lg text-xs font-mono text-zinc-200 focus:outline-none focus:border-zinc-500 transition"
-                  placeholder="http://localhost:3000/api/v1"
+                  placeholder="http://nlxi448mx3uwcr4oj3yjhjod.187.127.157.13.sslip.io/api/v1"
                 />
               </div>
               <div className="flex items-center justify-between text-xs bg-zinc-950 p-3 rounded-lg border border-zinc-850">
                 <span className="text-zinc-500">Live Status:</span>
                 <span className={`font-semibold flex items-center gap-1.5 ${isLiveApi ? 'text-emerald-500' : 'text-amber-500'}`}>
                   <span className={`h-1.5 w-1.5 rounded-full ${isLiveApi ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
-                  {isLiveApi ? 'Connected to Backend (Port 3000)' : 'Backend Offline (Using Mock Fallback)'}
+                  {isLiveApi ? 'Connected to Backend' : 'Backend Offline (Using Mock Fallback)'}
                 </span>
               </div>
             </div>

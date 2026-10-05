@@ -1,11 +1,13 @@
 import { Doctor, BloodCollector, Coupon, Order, DashboardStats, GlobalConfig, CommissionItem, City, PharmaProduct, PharmaOrder, PharmaOrderStatus } from '../types/admin';
 
-// Default API URL (can be customized via settings)
+// Default API URL (can be customized via settings or env)
+const DEFAULT_API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://nlxi448mx3uwcr4oj3yjhjod.187.127.157.13.sslip.io/api/v1';
+
 export const getApiBaseUrl = (): string => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('digontom_api_url') || 'http://localhost:3000/api/v1';
+    return localStorage.getItem('digontom_api_url') || DEFAULT_API_BASE_URL;
   }
-  return 'http://localhost:3000/api/v1';
+  return DEFAULT_API_BASE_URL;
 };
 
 export const setApiBaseUrl = (url: string) => {
