@@ -189,13 +189,35 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders, collectors, onRe
                     </td>
 
                     <td className="px-6 py-4">
-                      <div className="font-medium text-white flex items-center gap-1.5">
-                        <User className="h-3.5 w-3.5 text-zinc-400" /> {order.customerName}
-                      </div>
-                      <div className="text-[11px] text-zinc-500 flex items-center gap-1 mt-0.5 font-mono">
-                        <Phone className="h-3 w-3 text-zinc-600" /> {order.customerMobile}
-                      </div>
-                      <div className="text-[10px] text-zinc-500 truncate max-w-[200px] mt-0.5 flex items-center gap-1">
+                      {order.patientName ? (
+                        <div>
+                          <div className="font-semibold text-white flex items-center gap-1.5 text-xs">
+                            <User className="h-3.5 w-3.5 text-indigo-400" /> {order.patientName}
+                            {order.patientRelationship && (
+                              <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono">
+                                {order.patientRelationship}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[10px] text-zinc-400 mt-0.5 font-mono">
+                            {order.patientAge ? `${order.patientAge} yrs` : ''} {order.patientGender ? `• ${order.patientGender}` : ''}
+                            {order.patientPhone ? ` • ${order.patientPhone}` : ''}
+                          </div>
+                          <div className="text-[10px] text-zinc-500 mt-1 border-t border-zinc-800/60 pt-0.5">
+                            Booked by: <span className="text-zinc-400">{order.customerName}</span> ({order.customerMobile})
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="font-medium text-white flex items-center gap-1.5">
+                            <User className="h-3.5 w-3.5 text-zinc-400" /> {order.customerName}
+                          </div>
+                          <div className="text-[11px] text-zinc-500 flex items-center gap-1 mt-0.5 font-mono">
+                            <Phone className="h-3 w-3 text-zinc-600" /> {order.customerMobile}
+                          </div>
+                        </div>
+                      )}
+                      <div className="text-[10px] text-zinc-500 truncate max-w-[200px] mt-1 flex items-center gap-1">
                         <MapPin className="h-3 w-3 text-zinc-600 shrink-0" /> {order.deliveryAddress}
                       </div>
                     </td>

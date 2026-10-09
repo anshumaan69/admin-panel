@@ -64,6 +64,22 @@ export interface Order {
   id: string;
   customerName: string;
   customerMobile: string;
+  patientId?: string;
+  patientName?: string;
+  patientAge?: number;
+  patientGender?: 'male' | 'female' | 'other';
+  patientRelationship?: string;
+  patientPhone?: string;
+  patientEmail?: string;
+  patient?: {
+    id?: string;
+    fullName: string;
+    age: number;
+    gender: string;
+    relationship?: string;
+    phoneNumber?: string;
+    email?: string;
+  };
   deliveryAddress: string;
   totalAmount: number | string;
   paymentMethod: string;
