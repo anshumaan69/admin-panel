@@ -234,9 +234,14 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders, collectors, onRe
 
                     <td className="px-6 py-4">
                       <span className="font-bold text-zinc-200 text-xs block">₹{order.totalAmount}</span>
-                      <span className="text-[10px] uppercase font-semibold text-zinc-555 font-mono">
+                      <span className="text-[10px] uppercase font-semibold text-zinc-555 font-mono block">
                         {order.paymentMethod} ({order.paymentStatus})
                       </span>
+                      {order.requiresHardCopy && (
+                        <span className="text-[10px] text-amber-400 font-semibold block mt-0.5">
+                          + Hard Copy ({order.hardCopyCharge ? `₹${order.hardCopyCharge}` : 'Requested'})
+                        </span>
+                      )}
                     </td>
 
                     <td className="px-6 py-4 space-y-1.5">

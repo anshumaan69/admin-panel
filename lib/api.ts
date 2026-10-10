@@ -230,6 +230,9 @@ let MOCK_CONFIG: GlobalConfig = {
   defaultReferralCommission: 6.0,
   smsGatewayApiKey: 'SG_PROD_API_KEY_9928310',
   paymentGatewayConfig: { provider: 'Razorpay', liveMode: true },
+  collectionChargeThreshold: 500.0,
+  collectionChargeFee: 200.0,
+  hardCopyCharge: 50.0,
 };
 
 // --- AUTH APIS ---
@@ -471,6 +474,27 @@ export const updateGlobalConfigApi = async (configData: Partial<GlobalConfig>) =
   } catch (e) {
     MOCK_CONFIG = { ...MOCK_CONFIG, ...configData };
     return { success: true, data: MOCK_CONFIG };
+  }
+};
+
+export const getHardCopyChargeApi = async (): Promise<{ hardCopyCharge: number }> => {
+  try {
+    const res = await fetchWithAuth('/admin/hard-copy-charge');
+    return res.data;
+  } catch (e) {
+    return { hardCopyCharge: MOCK_CONFIG.hardCopyCharge ?? 50.0 };
+  }
+};
+
+export const updateHardCopyChargeApi = async (hardCopyCharge: number) => {
+  try {
+    return await fetchWithAuth('/admin/hard-copy-charge', {
+      method: 'PUT',
+      body: JSON.stringify({ hardCopyCharge }),
+    });
+  } catch (e) {
+    MOCK_CONFIG.hardCopyCharge = hardCopyCharge;
+    return { success: true, data: { hardCopyCharge } };
   }
 };
 

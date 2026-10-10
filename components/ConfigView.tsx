@@ -11,6 +11,7 @@ import {
   Percent,
   RefreshCw,
   Zap,
+  Printer,
 } from 'lucide-react';
 import { getGlobalConfigApi, updateGlobalConfigApi, getApiBaseUrl } from '../lib/api';
 
@@ -20,6 +21,9 @@ export const ConfigView: React.FC = () => {
     defaultReferralCommission: 6.0,
     smsGatewayApiKey: 'SG_PROD_API_KEY_9928310',
     paymentGatewayConfig: { provider: 'Razorpay', liveMode: true },
+    collectionChargeThreshold: 500.0,
+    collectionChargeFee: 200.0,
+    hardCopyCharge: 50.0,
   });
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -141,6 +145,72 @@ export const ConfigView: React.FC = () => {
               />
               <span className="text-[10px] text-zinc-500 mt-1 block">
                 Applied when patients use doctor's referral promo code.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Hard Copy Report & Collection Charges */}
+        <div className="bg-zinc-900 p-6 rounded-xl border border-zinc-800/80 space-y-4">
+          <h3 className="text-xs font-semibold text-white flex items-center gap-2 border-b border-zinc-800 pb-3">
+            <Printer className="h-4 w-4 text-amber-400" /> Hard Copy Report & Home Collection Settings
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-[11px] font-medium text-zinc-400 mb-1">
+                Hard Copy Report Charge (₹)
+              </label>
+              <input
+                type="number"
+                step="1"
+                min="0"
+                value={config.hardCopyCharge ?? 50.0}
+                onChange={e =>
+                  setConfig({ ...config, hardCopyCharge: parseFloat(e.target.value) || 0 })
+                }
+                className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 rounded-lg text-xs font-mono text-white focus:outline-none focus:border-zinc-500 transition"
+              />
+              <span className="text-[10px] text-zinc-500 mt-1 block">
+                Charged when patient requests a printed hard copy report.
+              </span>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-medium text-zinc-400 mb-1">
+                Home Collection Fee (₹)
+              </label>
+              <input
+                type="number"
+                step="1"
+                min="0"
+                value={config.collectionChargeFee ?? 200.0}
+                onChange={e =>
+                  setConfig({ ...config, collectionChargeFee: parseFloat(e.target.value) || 0 })
+                }
+                className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 rounded-lg text-xs font-mono text-white focus:outline-none focus:border-zinc-500 transition"
+              />
+              <span className="text-[10px] text-zinc-500 mt-1 block">
+                Phlebotomist home pickup fee below threshold.
+              </span>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-medium text-zinc-400 mb-1">
+                Free Collection Threshold (₹)
+              </label>
+              <input
+                type="number"
+                step="1"
+                min="0"
+                value={config.collectionChargeThreshold ?? 500.0}
+                onChange={e =>
+                  setConfig({ ...config, collectionChargeThreshold: parseFloat(e.target.value) || 0 })
+                }
+                className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 rounded-lg text-xs font-mono text-white focus:outline-none focus:border-zinc-500 transition"
+              />
+              <span className="text-[10px] text-zinc-500 mt-1 block">
+                Orders equal or above this get free collection.
               </span>
             </div>
           </div>

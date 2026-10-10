@@ -90,6 +90,9 @@ export interface Order {
   collectorId?: string;
   collectorName?: string;
   collectorMobile?: string;
+  collectionCharge?: number;
+  requiresHardCopy?: boolean;
+  hardCopyCharge?: number;
   testPackages: OrderItem[];
   createdAt: string;
   updatedAt: string;
@@ -111,6 +114,9 @@ export interface GlobalConfig {
   defaultReferralCommission: number;
   smsGatewayApiKey: string;
   paymentGatewayConfig?: Record<string, any>;
+  collectionChargeThreshold?: number;
+  collectionChargeFee?: number;
+  hardCopyCharge?: number;
 }
 
 export interface CommissionItem {
