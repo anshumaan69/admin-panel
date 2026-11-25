@@ -385,17 +385,10 @@ export const updateBloodCollectorApi = async (
     isActive?: boolean;
   }
 ) => {
-  try {
-    return await fetchWithAuth(`/admin/blood-collectors/${collectorId}`, {
-      method: 'PUT',
-      body: JSON.stringify(updates),
-    });
-  } catch (e) {
-    MOCK_COLLECTORS = MOCK_COLLECTORS.map(c =>
-      c.id === collectorId ? { ...c, ...updates } : c
-    );
-    return { success: true, data: { collectorId, ...updates } };
-  }
+  return await fetchWithAuth(`/admin/blood-collectors/${collectorId}`, {
+    method: 'PUT',
+    body: JSON.stringify(updates),
+  });
 };
 
 // --- COUPONS APIS ---
@@ -566,40 +559,17 @@ export const getOrdersApi = async (): Promise<Order[]> => {
 };
 
 export const assignCollectorToOrderApi = async (orderId: string, collectorId: string) => {
-  try {
-    return await fetchWithAuth(`/admin/orders/${orderId}/assign-collector`, {
-      method: 'POST',
-      body: JSON.stringify({ collectorId }),
-    });
-  } catch (e) {
-    const collector = MOCK_COLLECTORS.find(c => c.id === collectorId);
-    MOCK_ORDERS = MOCK_ORDERS.map(o =>
-      o.id === orderId
-        ? {
-            ...o,
-            status: 'collector_assigned',
-            collectorId,
-            collectorName: collector?.name || 'Assigned Collector',
-            collectorMobile: collector?.mobileNumber || '',
-          }
-        : o
-    );
-    return { success: true, message: 'Collector assigned successfully' };
-  }
+  return await fetchWithAuth(`/admin/orders/${orderId}/assign-collector`, {
+    method: 'POST',
+    body: JSON.stringify({ collectorId }),
+  });
 };
 
 export const uploadOrderReportApi = async (orderId: string, reportUrl: string) => {
-  try {
-    return await fetchWithAuth(`/admin/orders/${orderId}/upload-report`, {
-      method: 'POST',
-      body: JSON.stringify({ reportUrl }),
-    });
-  } catch (e) {
-    MOCK_ORDERS = MOCK_ORDERS.map(o =>
-      o.id === orderId ? { ...o, status: 'report_ready', reportUrl } : o
-    );
-    return { success: true, message: 'Report uploaded successfully' };
-  }
+  return await fetchWithAuth(`/admin/orders/${orderId}/upload-report`, {
+    method: 'POST',
+    body: JSON.stringify({ reportUrl }),
+  });
 };
 
 export const sendPatientOtpApi = async (mobileNumber: string) => {
